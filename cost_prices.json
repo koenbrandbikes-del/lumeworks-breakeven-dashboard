@@ -1,0 +1,50 @@
+{
+  "8721008982625": {
+    "naam": "LumeWorks Prime",
+    "inkoopprijs": 36.00,
+    "shipping_nl": 1.33,
+    "fulfilment_tiers": {"1": 7.00, "2": 8.50, "3": 10.00},
+    "shopify_pct": 0.02,
+    "overhead_pct": 0.04
+  },
+  "8721008982564": {
+    "naam": "LumeWorks Atlas",
+    "inkoopprijs": 58.00,
+    "shipping_nl": 2.80,
+    "fulfilment_tiers": {"1": 8.00, "2": 9.50, "3": 11.00},
+    "shopify_pct": 0.02,
+    "overhead_pct": 0.04
+  },
+  "8721008982557": {
+    "naam": "LumeWorks Titan",
+    "inkoopprijs": 97.00,
+    "shipping_nl": 3.80,
+    "fulfilment_tiers": {"1": 9.50, "2": 11.00, "3": 12.50},
+    "shopify_pct": 0.02,
+    "overhead_pct": 0.04
+  },
+  "8721008982649": {
+    "naam": "Projectiescherm 100 inch",
+    "inkoopprijs": 25.94,
+    "shipping_nl": 2.37,
+    "fulfilment_tiers": {"1": 9.50, "2": 9.50, "3": 9.50},
+    "shopify_pct": 0.02,
+    "overhead_pct": 0.04
+  },
+  "8721008982601": {
+    "naam": "Pro stand",
+    "inkoopprijs": 9.30,
+    "shipping_nl": 1.86,
+    "fulfilment_tiers": {"1": 9.50, "2": 9.50, "3": 9.50},
+    "shopify_pct": 0.02,
+    "overhead_pct": 0.04
+  },
+  "8721008982595": {
+    "naam": "Mini stand",
+    "inkoopprijs": 5.32,
+    "shipping_nl": 0.36,
+    "fulfilment_tiers": {"1": 7.00, "2": 7.00, "3": 7.00},
+    "shopify_pct": 0.02,
+    "overhead_pct": 0.04
+  }
+}
