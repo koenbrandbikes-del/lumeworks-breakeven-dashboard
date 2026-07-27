@@ -1174,18 +1174,32 @@ function lwRender() {{
     var diff = realized.roas - heroRoas;
     realizedEl.className = 'hero-metric-value'; realizedEl.textContent = jsRoas(realized.roas);
     diffEl.className = 'hero-metric-value' + (diff >= 0 ? '' : ' neg-value'); diffEl.textContent = (diff >= 0 ? '+' : '−') + jsRoas(Math.abs(diff));
+
+    // Status (kleur + verdict) volgt het geschatte resultaat in euro's, NIET
+    // de ROAS-vergelijking. Reden: werkelijke ROAS gebruikt TrackBee's eigen
+    // ad-platformomzet (kan een andere/ruimere attributiegrondslag hebben dan
+    // onze Shopify-orders), terwijl het eurobedrag hieronder intern
+    // consistent is: onze eigen marge (uit Shopify) min de echte spend (uit
+    // TrackBee). Bij afwijkende grondslagen kan de ROAS "winstgevend" zeggen
+    // terwijl de euro's verlies laten zien (of andersom) - de euro's zijn
+    // dan leidend, met de ROAS-vergelijking als extra context.
     var estProfit = g.marge - realized.spend;
     var coverageNote = realized.daysCovered < realized.daysTotal ? ' (TrackBee dekt ' + realized.daysCovered + ' van de ' + realized.daysTotal + ' dagen in deze selectie)' : '';
     var spendNote = ' Advertentie-uitgaven: ' + jsEur(realized.spend) + '.';
-    if (diff > 0.05) {{
+    var roasNote = ' Werkelijke ROAS ' + jsRoas(realized.roas) + ' vs. benodigde ' + jsRoas(heroRoas) + '.';
+    var profitBand = Math.abs(realized.spend) * 0.05;
+    if (estProfit > profitBand) {{
       statusEl.className = 'hero-status status-profit';
-      statusEl.textContent = 'Winstgevend — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt boven de benodigde ' + jsRoas(heroRoas) + '.' + spendNote + ' Geschat resultaat: ' + jsEur(estProfit) + coverageNote + '.';
-    }} else if (diff < -0.05) {{
+      statusEl.textContent = 'Winstgevend — geschat resultaat: ' + jsEur(estProfit) + '.' + spendNote + roasNote + coverageNote + '.';
+    }} else if (estProfit < -profitBand) {{
       statusEl.className = 'hero-status status-loss';
-      statusEl.textContent = 'Verliesgevend — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt onder de benodigde ' + jsRoas(heroRoas) + '.' + spendNote + ' Geschat resultaat: ' + jsEur(estProfit) + coverageNote + '.';
+      statusEl.textContent = 'Verliesgevend — geschat resultaat: ' + jsEur(estProfit) + '.' + spendNote + roasNote + coverageNote + '.';
     }} else {{
       statusEl.className = 'hero-status status-pending';
-      statusEl.textContent = 'Rond break-even — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt dicht bij de benodigde ' + jsRoas(heroRoas) + '.' + spendNote + coverageNote + '.';
+      statusEl.textContent = 'Rond break-even — geschat resultaat: ' + jsEur(estProfit) + '.' + spendNote + roasNote + coverageNote + '.';
+    }}
+    if ((estProfit > 0) !== (diff > 0)) {{
+      statusEl.textContent += ' Let op: ROAS-vergelijking en eurobedrag wijzen tegengesteld — waarschijnlijk doordat TrackBee\\'s omzetgrondslag afwijkt van je Shopify-omzet voor dit kanaal/deze periode.';
     }}
   }}
 
