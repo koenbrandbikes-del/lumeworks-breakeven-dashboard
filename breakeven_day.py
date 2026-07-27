@@ -1176,15 +1176,16 @@ function lwRender() {{
     diffEl.className = 'hero-metric-value' + (diff >= 0 ? '' : ' neg-value'); diffEl.textContent = (diff >= 0 ? '+' : '−') + jsRoas(Math.abs(diff));
     var estProfit = g.marge - realized.spend;
     var coverageNote = realized.daysCovered < realized.daysTotal ? ' (TrackBee dekt ' + realized.daysCovered + ' van de ' + realized.daysTotal + ' dagen in deze selectie)' : '';
+    var spendNote = ' Advertentie-uitgaven: ' + jsEur(realized.spend) + '.';
     if (diff > 0.05) {{
       statusEl.className = 'hero-status status-profit';
-      statusEl.textContent = 'Winstgevend — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt boven de benodigde ' + jsRoas(heroRoas) + '. Geschat resultaat: ' + jsEur(estProfit) + coverageNote + '.';
+      statusEl.textContent = 'Winstgevend — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt boven de benodigde ' + jsRoas(heroRoas) + '.' + spendNote + ' Geschat resultaat: ' + jsEur(estProfit) + coverageNote + '.';
     }} else if (diff < -0.05) {{
       statusEl.className = 'hero-status status-loss';
-      statusEl.textContent = 'Verliesgevend — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt onder de benodigde ' + jsRoas(heroRoas) + '. Geschat resultaat: ' + jsEur(estProfit) + coverageNote + '.';
+      statusEl.textContent = 'Verliesgevend — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt onder de benodigde ' + jsRoas(heroRoas) + '.' + spendNote + ' Geschat resultaat: ' + jsEur(estProfit) + coverageNote + '.';
     }} else {{
       statusEl.className = 'hero-status status-pending';
-      statusEl.textContent = 'Rond break-even — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt dicht bij de benodigde ' + jsRoas(heroRoas) + coverageNote + '.';
+      statusEl.textContent = 'Rond break-even — werkelijke ROAS (' + jsRoas(realized.roas) + ') ligt dicht bij de benodigde ' + jsRoas(heroRoas) + '.' + spendNote + coverageNote + '.';
     }}
   }}
 
