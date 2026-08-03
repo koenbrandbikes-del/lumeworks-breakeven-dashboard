@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "source": "TrackBee get_dashboard_overview per dag, incrementeel ververst tot en met 2026-08-03T18:45:11Z",
+    "source": "TrackBee get_dashboard_overview per dag, incrementeel ververst tot en met 2026-08-03T19:45:12Z",
     "onboarding_date": "2026-07-20",
     "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen."
   },
@@ -146,11 +146,11 @@
   },
   "2026-08-03": {
     "Meta": {
-      "spend": 93.43,
+      "spend": 96.6,
       "revenue": 0.0
     },
     "Google": {
-      "spend": 39.75,
+      "spend": 40.51,
       "revenue": 180.0
     }
   }
