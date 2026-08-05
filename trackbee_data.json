@@ -1,177 +1,177 @@
 {
-    "2026-07-20": {
-        "Google": {
-            "revenue": 0.0,
-            "spend": 32.88
-        },
-        "Meta": {
-            "revenue": 0.0,
-            "spend": 212.19
-        }
+  "2026-07-20": {
+    "Google": {
+      "revenue": 0.0,
+      "spend": 32.88
     },
-    "2026-07-21": {
-        "Google": {
-            "revenue": 0.0,
-            "spend": 27.3
-        },
-        "Meta": {
-            "revenue": 298.0,
-            "spend": 200.7
-        }
-    },
-    "2026-07-22": {
-        "Google": {
-            "revenue": 0.0,
-            "spend": 27.91
-        },
-        "Meta": {
-            "revenue": 903.0,
-            "spend": 203.39
-        }
-    },
-    "2026-07-23": {
-        "Google": {
-            "revenue": 447.0,
-            "spend": 20.59
-        },
-        "Meta": {
-            "revenue": 298.0,
-            "spend": 213.53
-        }
-    },
-    "2026-07-24": {
-        "Google": {
-            "revenue": 298.0,
-            "spend": 8.29
-        },
-        "Meta": {
-            "revenue": 149.0,
-            "spend": 121.15
-        }
-    },
-    "2026-07-25": {
-        "Google": {
-            "revenue": 298.0,
-            "spend": 38.48
-        },
-        "Meta": {
-            "revenue": 298.0,
-            "spend": 135.88
-        }
-    },
-    "2026-07-26": {
-        "Google": {
-            "revenue": 0.0,
-            "spend": 32.32
-        },
-        "Meta": {
-            "revenue": 432.1,
-            "spend": 162.12
-        }
-    },
-    "2026-07-27": {
-        "Google": {
-            "revenue": 0.0,
-            "spend": 6.86
-        },
-        "Meta": {
-            "revenue": 0.0,
-            "spend": 28.6
-        }
-    },
-    "2026-07-28": {
-        "Google": {
-            "revenue": 447.0,
-            "spend": 27.33
-        },
-        "Meta": {
-            "revenue": 596.0,
-            "spend": 143.06
-        }
-    },
-    "2026-07-29": {
-        "Google": {
-            "revenue": 1312.4,
-            "spend": 26.72
-        },
-        "Meta": {
-            "revenue": 710.2,
-            "spend": 132.87
-        }
-    },
-    "2026-07-30": {
-        "Google": {
-            "revenue": 627.85,
-            "spend": 39.09
-        },
-        "Meta": {
-            "revenue": 149.0,
-            "spend": 133.19
-        }
-    },
-    "2026-07-31": {
-        "Google": {
-            "revenue": 0.0,
-            "spend": 27.45
-        },
-        "Meta": {
-            "revenue": 678.0,
-            "spend": 134.46
-        }
-    },
-    "2026-08-01": {
-        "Google": {
-            "revenue": 180.0,
-            "spend": 49.46
-        },
-        "Meta": {
-            "revenue": 298.0,
-            "spend": 124.76
-        }
-    },
-    "2026-08-02": {
-        "Google": {
-            "revenue": 180.0,
-            "spend": 50.03
-        },
-        "Meta": {
-            "revenue": 892.1,
-            "spend": 152.96
-        }
-    },
-    "2026-08-03": {
-        "Google": {
-            "revenue": 180.0,
-            "spend": 45.7
-        },
-        "Meta": {
-            "revenue": 0.0,
-            "spend": 102.14
-        }
-    },
-    "2026-08-04": {
-        "Google": {
-            "revenue": 0.0,
-            "spend": 39.71
-        },
-        "Meta": {
-            "revenue": 0.0,
-            "spend": 162.51
-        }
-    },
-    "2026-08-05": {
-        "Google": {
-            "revenue": 0.0,
-            "spend": 8.5
-        },
-        "Meta": {
-            "revenue": 0.0,
-            "spend": 94.63
-        }
-    },
-    "_meta": {
-        "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen.",
-        "onboarding_date": "2026-07-20",
-        "source": "TrackBee Insights MCP, incremental refresh 2026-08-05T09:44:00Z (scheduled routine)"
+    "Meta": {
+      "revenue": 0.0,
+      "spend": 212.19
     }
+  },
+  "2026-07-21": {
+    "Google": {
+      "revenue": 0.0,
+      "spend": 27.3
+    },
+    "Meta": {
+      "revenue": 298.0,
+      "spend": 200.7
+    }
+  },
+  "2026-07-22": {
+    "Google": {
+      "revenue": 0.0,
+      "spend": 27.91
+    },
+    "Meta": {
+      "revenue": 903.0,
+      "spend": 203.39
+    }
+  },
+  "2026-07-23": {
+    "Google": {
+      "revenue": 447.0,
+      "spend": 20.59
+    },
+    "Meta": {
+      "revenue": 298.0,
+      "spend": 213.53
+    }
+  },
+  "2026-07-24": {
+    "Google": {
+      "revenue": 298.0,
+      "spend": 8.29
+    },
+    "Meta": {
+      "revenue": 149.0,
+      "spend": 121.15
+    }
+  },
+  "2026-07-25": {
+    "Google": {
+      "revenue": 298.0,
+      "spend": 38.48
+    },
+    "Meta": {
+      "revenue": 298.0,
+      "spend": 135.88
+    }
+  },
+  "2026-07-26": {
+    "Google": {
+      "revenue": 0.0,
+      "spend": 32.32
+    },
+    "Meta": {
+      "revenue": 432.1,
+      "spend": 162.12
+    }
+  },
+  "2026-07-27": {
+    "Google": {
+      "revenue": 0.0,
+      "spend": 6.86
+    },
+    "Meta": {
+      "revenue": 0.0,
+      "spend": 28.6
+    }
+  },
+  "2026-07-28": {
+    "Google": {
+      "revenue": 447.0,
+      "spend": 27.33
+    },
+    "Meta": {
+      "revenue": 596.0,
+      "spend": 143.06
+    }
+  },
+  "2026-07-29": {
+    "Google": {
+      "revenue": 1312.4,
+      "spend": 26.72
+    },
+    "Meta": {
+      "revenue": 710.2,
+      "spend": 132.87
+    }
+  },
+  "2026-07-30": {
+    "Google": {
+      "revenue": 627.85,
+      "spend": 39.09
+    },
+    "Meta": {
+      "revenue": 149.0,
+      "spend": 133.19
+    }
+  },
+  "2026-07-31": {
+    "Google": {
+      "revenue": 0.0,
+      "spend": 27.45
+    },
+    "Meta": {
+      "revenue": 678.0,
+      "spend": 134.46
+    }
+  },
+  "2026-08-01": {
+    "Google": {
+      "revenue": 180.0,
+      "spend": 49.46
+    },
+    "Meta": {
+      "revenue": 298.0,
+      "spend": 124.76
+    }
+  },
+  "2026-08-02": {
+    "Google": {
+      "revenue": 180.0,
+      "spend": 50.03
+    },
+    "Meta": {
+      "revenue": 892.1,
+      "spend": 152.96
+    }
+  },
+  "2026-08-03": {
+    "Google": {
+      "revenue": 180.0,
+      "spend": 45.7
+    },
+    "Meta": {
+      "revenue": 0.0,
+      "spend": 102.14
+    }
+  },
+  "2026-08-04": {
+    "Google": {
+      "revenue": 0,
+      "spend": 39.71
+    },
+    "Meta": {
+      "revenue": 0,
+      "spend": 162.52
+    }
+  },
+  "2026-08-05": {
+    "Google": {
+      "revenue": 0,
+      "spend": 13.52
+    },
+    "Meta": {
+      "revenue": 0,
+      "spend": 118.03
+    }
+  },
+  "_meta": {
+    "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen.",
+    "onboarding_date": "2026-07-20",
+    "source": "TrackBee Insights MCP, incremental refresh 2026-08-05T10:45:00Z (scheduled routine)"
+  }
 }
