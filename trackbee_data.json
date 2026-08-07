@@ -170,28 +170,28 @@
     }
   },
   "2026-08-06": {
-    "Google": {
-      "revenue": 934.79,
-      "spend": 53.88
-    },
     "Meta": {
-      "revenue": 745.0,
-      "spend": 342.73
+      "spend": 342.73,
+      "revenue": 745.0
+    },
+    "Google": {
+      "spend": 53.88,
+      "revenue": 934.79
     }
   },
   "2026-08-07": {
-    "Google": {
-      "revenue": 268.2,
-      "spend": 39.6
-    },
     "Meta": {
-      "revenue": 283.1,
-      "spend": 230.9
+      "spend": 244.04,
+      "revenue": 283.1
+    },
+    "Google": {
+      "spend": 49.89,
+      "revenue": 268.2
     }
   },
   "_meta": {
     "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen.",
     "onboarding_date": "2026-07-20",
-    "source": "Incremental refresh 2026-08-07T14:44:00Z (UTC) via TrackBee Insights MCP: re-fetched and wrote 2026-08-07 (today) and 2026-08-06 (yesterday) Meta+Google spend/revenue. All older dates untouched."
+    "source": "Incremental refresh 2026-08-07T15:47:00Z (UTC) via TrackBee Insights MCP: re-fetched and wrote 2026-08-07 (today) and 2026-08-06 (yesterday) Meta+Google spend/revenue. All older dates untouched."
   }
 }
