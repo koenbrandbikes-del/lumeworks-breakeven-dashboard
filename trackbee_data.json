@@ -171,17 +171,27 @@
   },
   "2026-08-06": {
     "Google": {
-      "revenue": 0.0,
-      "spend": 24.03
+      "revenue": 934.79,
+      "spend": 53.88
     },
     "Meta": {
-      "revenue": 298.0,
-      "spend": 223.65
+      "revenue": 745.0,
+      "spend": 342.67
+    }
+  },
+  "2026-08-07": {
+    "Google": {
+      "revenue": 0.0,
+      "spend": 12.89
+    },
+    "Meta": {
+      "revenue": 134.1,
+      "spend": 110.33
     }
   },
   "_meta": {
     "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen.",
     "onboarding_date": "2026-07-20",
-    "source": "Incremental refresh attempted 2026-08-07T07:45:48Z (UTC) via TrackBee Insights MCP for 2026-08-07 and 2026-08-06: get_dashboard_overview errored on all attempts (2 tries each date, 'information isn't available right now'), and a get_store_information connectivity probe also errored (backend TypeError: fromisoformat argument must be str) indicating the same TrackBee API outage persists from the prior run. NO new data was written for either date this run - existing 2026-08-06 value is unchanged from the prior run, 2026-08-07 remains absent. All older dates untouched."
+    "source": "Incremental refresh 2026-08-07T08:44:00Z (UTC) via TrackBee Insights MCP: successfully fetched and wrote 2026-08-07 and 2026-08-06 (Meta+Google spend/revenue). Also fixed a standing bug where prior runs committed in detached HEAD and pushed the stale local main branch, stranding ~50 commits (2026-08-04 through 2026-08-07) that never reached origin/main; those commits were recovered onto main and pushed this run. All older dates untouched."
   }
 }
