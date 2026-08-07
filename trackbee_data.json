@@ -182,6 +182,6 @@
   "_meta": {
     "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen.",
     "onboarding_date": "2026-07-20",
-    "source": "Refreshed via TrackBee Insights MCP on 2026-08-06T15:45Z (automated incremental run) for 2026-08-05 and 2026-08-06"
+    "source": "Incremental refresh attempted 2026-08-07T (UTC) via TrackBee Insights MCP for 2026-08-07 and 2026-08-06: get_dashboard_overview errored on all attempts (2 tries each date, 'information isn't available right now') so NO new data was written for either date this run. 2026-08-04/05/06 data present here was fetched and pushed by a prior/concurrent run."
   }
 }
