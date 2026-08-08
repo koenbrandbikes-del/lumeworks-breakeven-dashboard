@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "source": "TrackBee get_dashboard_overview per dag, incrementeel ververst tot en met 2026-08-03T09:45:41Z",
+    "source": "TrackBee get_dashboard_overview per dag, incrementeel ververst tot en met 2026-08-08T00:00:00Z (scheduled routine refresh)",
     "onboarding_date": "2026-07-20",
     "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen."
   },
@@ -18,5 +18,7 @@
   "2026-07-31": {"Meta": {"spend": 134.46, "revenue": 678.00}, "Google": {"spend": 27.45, "revenue": 0.00}},
   "2026-08-01": {"Meta": {"spend": 124.76, "revenue": 298.00}, "Google": {"spend": 49.46, "revenue": 180.00}},
   "2026-08-02": {"Meta": {"spend": 152.92, "revenue": 892.10}, "Google": {"spend": 50.03, "revenue": 180.00}},
-  "2026-08-03": {"Meta": {"spend": 41.90, "revenue": 0.00}, "Google": {"spend": 18.54, "revenue": 0.00}}
+  "2026-08-03": {"Meta": {"spend": 41.90, "revenue": 0.00}, "Google": {"spend": 18.54, "revenue": 0.00}},
+  "2026-08-07": {"Meta": {"spend": 358.84, "revenue": 879.10}, "Google": {"spend": 89.30, "revenue": 566.20}},
+  "2026-08-08": {"Meta": {"spend": 18.51, "revenue": 0.00}, "Google": {"spend": 0.00, "revenue": 0.00}}
 }
