@@ -226,7 +226,7 @@
     },
     "Meta": {
       "revenue": 149.0,
-      "spend": 179.45
+      "spend": 179.6
     }
   },
   "2026-08-12": {
@@ -236,12 +236,12 @@
     },
     "Meta": {
       "revenue": 0.0,
-      "spend": 7.67
+      "spend": 10.48
     }
   },
   "_meta": {
     "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen.",
     "onboarding_date": "2026-07-20",
-    "source": "Refreshed via incremental TrackBee sync on 2026-08-12T09:44Z (today) and 2026-08-11 (yesterday) via automated dashboard routine"
+    "source": "Refreshed via incremental TrackBee sync on 2026-08-12T11:30Z (today) and 2026-08-11 (yesterday) via automated dashboard routine"
   }
 }
