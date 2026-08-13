@@ -230,28 +230,28 @@
     }
   },
   "2026-08-12": {
-    "Google": {
-      "revenue": 637.0,
-      "spend": 80.58
-    },
     "Meta": {
-      "revenue": 696.0,
-      "spend": 185.57
+      "spend": 185.63,
+      "revenue": 696.0
+    },
+    "Google": {
+      "spend": 80.58,
+      "revenue": 637.0
     }
   },
   "2026-08-13": {
-    "Google": {
-      "revenue": 0.0,
-      "spend": 4.07
-    },
     "Meta": {
-      "revenue": 0.0,
-      "spend": 7.0
+      "spend": 10.48,
+      "revenue": 0.0
+    },
+    "Google": {
+      "spend": 4.07,
+      "revenue": 0.0
     }
   },
   "_meta": {
     "note": "Cloud routine trig_01219CYS4DR9PbJbvfS5U4i2 blijkt recente dagen alsnog niet betrouwbaar te vullen ondanks hardening - dit is een handmatige noodfix om het live dashboard weer kloppend te krijgen.",
     "onboarding_date": "2026-07-20",
-    "source": "TrackBee Insights MCP get_dashboard_overview, refreshed 2026-08-13T03:45:21Z (UTC) via scheduled incremental routine"
+    "source": "TrackBee Insights MCP get_dashboard_overview, refreshed 2026-08-13T (today's run) via scheduled incremental routine"
   }
 }
