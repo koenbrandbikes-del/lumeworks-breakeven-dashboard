@@ -239,8 +239,8 @@ HTML_TEMPLATE = """<!doctype html>
 <style>
 *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
 html,body{{min-height:100vh;overflow-x:hidden}}
-body{{background:#090d1a;color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.5;padding:0 20px 60px}}
-.wrap{{max-width:920px;margin:0 auto}}
+body{{background:#090d1a;color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.5}}
+.wrap{{max-width:820px;margin:0 auto;padding:0 20px 48px}}
 .hd{{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:32px 0 20px}}
 .hd h1{{font-size:clamp(15px,4vw,22px);font-weight:700;margin-bottom:3px;white-space:nowrap}}
 .hd p{{font-size:13px;color:#64748b}}
@@ -321,7 +321,7 @@ tr.tot td{{font-weight:700}}
 tr.sub td:first-child{{padding-left:28px;color:#64748b;font-size:12px}}
 
 .footer{{text-align:center;color:#475569;font-size:11px;margin-top:22px;padding-bottom:20px}}
-@media (max-width:640px){{
+@media (max-width:540px){{
   .mrow{{grid-template-columns:1fr}}
   .mc{{border-right:none;border-bottom:1px solid #1f3050}}
   .mc:last-child{{border-bottom:none}}
