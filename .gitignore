@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+shopify_daily.json
+google_campaigns_raw.json
