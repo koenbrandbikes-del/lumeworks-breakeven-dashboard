@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Management dashboard · Meta / Google / MER</title>
+<link rel="icon" type="image/png" href="favicon-management.png">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;overflow-x:hidden}
+body{background:#090d1a;color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.5;padding:0 20px 60px}
+.wrap{max-width:920px;margin:0 auto}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:32px 0 20px}
+.hd h1{font-size:clamp(15px,4vw,22px);font-weight:700;margin-bottom:3px;white-space:nowrap}
+.hd p{font-size:13px;color:#64748b}
+.card{background:#111827;border:1px solid #1f2d45;border-radius:16px;padding:24px;margin-bottom:12px}
+
+.period-wrap{position:relative}
+.period-btn{display:flex;align-items:center;gap:8px;background:#141e33;border:1px solid #1f3050;color:#f1f5f9;font-size:13px;font-weight:500;padding:8px 12px;border-radius:8px;cursor:pointer;outline:none;white-space:nowrap}
+.period-menu{display:none;position:absolute;right:0;top:calc(100% + 4px);background:#0d1829;border:1px solid #1f3050;border-radius:10px;min-width:230px;z-index:200;box-shadow:0 8px 32px rgba(0,0,0,.6);padding:6px 0}
+.period-menu.open{display:block}
+.pm-grp{font-size:10px;font-weight:700;letter-spacing:.08em;color:#475569;text-transform:uppercase;padding:8px 14px 3px}
+.pm-opt{padding:7px 14px;cursor:pointer;font-size:13px;color:#94a3b8}
+.pm-opt:hover{background:#1a2844;color:#f1f5f9}
+.pm-opt.active{color:#f1f5f9;font-weight:600}
+.pm-opt.active::before{content:"✓  ";color:#60a5fa}
+.pm-div{border-top:1px solid #1f2d45;margin:5px 0}
+.cal-pad{padding:6px 12px 12px}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.cal-nb{background:none;border:none;color:#64748b;cursor:pointer;font-size:18px;padding:0 6px;line-height:1}
+.cal-nb:hover{color:#f1f5f9}
+.cal-mlbl{font-size:12px;font-weight:600;color:#cbd5e1}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;text-align:center}
+.cal-dow{color:#475569;font-weight:700;font-size:9px;letter-spacing:.04em;padding:3px 0}
+.cal-day{padding:5px 2px;cursor:pointer;border-radius:3px;color:#94a3b8;font-size:11px}
+.cal-day:hover:not(.cd-off){background:#1a2844;color:#f1f5f9}
+.cd-off{color:#1f2d45!important;cursor:default}
+.cd-s,.cd-e{background:#2563eb!important;color:#fff!important;font-weight:700;border-radius:4px}
+.cd-r{background:#1e3050;color:#cbd5e1}
+.cd-today{color:#60a5fa}
+.cal-hint{font-size:10px;color:#475569;text-align:center;margin:5px 0}
+.cal-apply{width:100%;padding:6px;background:#2563eb;border:none;color:#fff;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;margin-top:2px}
+.cal-apply:disabled{background:#1a2844;color:#374151;cursor:default}
+
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:#1a2844;border:1px solid #1e3050;border-radius:12px;overflow:hidden;margin-bottom:12px}
+.kpi-item{padding:11px 12px;background:#0d1829;min-width:0}
+.kpi-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#475569;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-val{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi-item.good .kpi-val{color:#4ade80}
+.kpi-item.bad .kpi-val{color:#f87171}
+.kpi-item.warn .kpi-val{color:#fbbf24}
+.kpi-item.accent{background:#0e1f30}
+
+.roas-hero{margin-bottom:18px}
+.roas-hero-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;color:#64748b;text-transform:uppercase;margin-bottom:6px}
+.roas-hero-val{font-size:52px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rdelta{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;padding:5px 11px;border-radius:6px;margin-top:10px}
+.rdelta.neg{background:rgba(248,113,113,.12);color:#f87171}
+.rdelta.mid{background:rgba(245,158,11,.12);color:#f59e0b}
+.rdelta.pos{background:rgba(74,222,128,.12);color:#4ade80}
+
+.mrow{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid #1f3050;border-radius:10px;overflow:hidden;margin-bottom:14px}
+.mc{padding:14px 16px;border-right:1px solid #1f3050}
+.mc:last-child{border-right:none}
+.mc-lbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
+.mc-val{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.mc-val.na{font-size:14px;font-weight:500;color:#475569}
+.mc-val.good{color:#4ade80}
+.mc-val.warn{color:#fbbf24}
+.mc-val.bad{color:#f87171}
+.mc-sub{font-size:11px;color:#64748b;margin-top:2px}
+
+.note{font-size:12px;color:#64748b;margin-bottom:16px;line-height:1.5}
+.meta-info{font-size:12px;color:#64748b;margin-top:14px}
+
+.acc{display:flex;flex-direction:column;gap:4px}
+.acc-item{background:#111827;border:1px solid #1f2d45;border-radius:14px;overflow:hidden}
+.acc-hd{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;font-weight:600;font-size:14px}
+.acc-chv{color:#64748b;font-size:18px;transition:transform .2s;line-height:1}
+.acc-item.open .acc-chv{transform:rotate(90deg)}
+.acc-body{display:none;border-top:1px solid #1f2d45}
+.acc-item.open .acc-body{display:block}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:9px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #1f2d45;white-space:nowrap}
+th.r,td.r{text-align:right}
+td{padding:11px 14px;border-bottom:1px solid #1f2d45}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+tr:last-child td{border-bottom:none}
+tr.tot td{font-weight:700}
+tr.sub td:first-child{padding-left:28px;color:#64748b;font-size:12px}
+
+.footer{text-align:center;color:#475569;font-size:11px;margin-top:22px;padding-bottom:20px}
+@media (max-width:640px){
+  .mrow{grid-template-columns:1fr}
+  .mc{border-right:none;border-bottom:1px solid #1f3050}
+  .mc:last-child{border-bottom:none}
+  .kpi-strip{grid-template-columns:repeat(3,1fr)}
+  .kpi-item:last-child{grid-column:span 3;border-top:1px solid #1a2844}
+  .roas-hero-val{font-size:38px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hd">
+  <div>
+    <h1>Management dashboard</h1>
+    <p>Meta ROAS · Google ROAS (branded/non-branded) · MER</p>
+  </div>
+  <div class="period-wrap">
+    <button class="period-btn" onclick="event.stopPropagation();togglePM()">
+      <span id="periodBtnTxt">Deze maand</span>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <div class="period-menu" id="periodMenu" onclick="event.stopPropagation()">
+      <div class="pm-grp">Actueel</div>
+      <div class="pm-opt" data-p="vandaag" onclick="selectP('vandaag')">Vandaag</div>
+      <div class="pm-opt" data-p="gisteren" onclick="selectP('gisteren')">Gisteren</div>
+      <div class="pm-opt" data-p="week" onclick="selectP('week')">Deze week</div>
+      <div class="pm-opt active" data-p="maand" onclick="selectP('maand')">Deze maand</div>
+      <div class="pm-div"></div>
+      <div class="pm-opt" data-p="totaal" onclick="selectP('totaal')">Sinds start tracking</div>
+      <div class="pm-div"></div>
+      <div class="pm-grp">Aangepaste periode</div>
+      <div class="cal-pad">
+        <div class="cal-nav">
+          <button class="cal-nb" onclick="calPrev()">‹</button>
+          <span class="cal-mlbl" id="calMlbl"></span>
+          <button class="cal-nb" onclick="calNext()">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-hint" id="calHint">Klik een startdatum</div>
+        <button class="cal-apply" id="calApply" onclick="applyCustom()" disabled>Toepassen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="kpi-strip" id="kpiStrip"></div>
+
+<div class="card">
+  <div class="roas-hero">
+    <div class="roas-hero-lbl">MER — MARKETING EFFICIENCY RATIO</div>
+    <div class="roas-hero-val" id="merVal">—</div>
+    <div id="merDelta"></div>
+  </div>
+
+  <div class="mrow" id="mrow"></div>
+
+  <div class="note" id="googleNote">Meta = nieuwe omzet buiten de bestaande funnel. Google non-branded = vergelijkbare rol (vangt nieuwe vraag). Google branded = het laatste zetje voor mensen die al naar het merk zochten — hoge ROAS, maar minder incrementeel. B2B (relatiegeschenken) staat apart, andere doelgroep.</div>
+
+  <div class="meta-info" id="metaInfo"></div>
+</div>
+
+<div class="acc">
+  <div class="acc-item open" id="acc-detail">
+    <div class="acc-hd" onclick="tog('acc-detail')"><span>Detail per kanaal</span><span class="acc-chv">›</span></div>
+    <div class="acc-body"><table id="detailTable"></table></div>
+  </div>
+</div>
+
+<div class="footer">Bijgewerkt: 2026-08-13 12:23 UTC · Data sinds 2026-07-20 · Bron: Meta Marketing API, Google Ads (via TrackBee, campagne-niveau), Shopify</div>
+</div>
+
+<script>
+const PERIODS = {};
+[{"key": "vandaag", "label": "Vandaag", "from": "2026-08-13", "to": "2026-08-13", "days": 1, "hasGoogle": true, "metaSpend": 87.82, "metaRev": 0.0, "metaRoas": 0.0, "brandedSpend": 1.02, "brandedRev": 0.0, "brandedRoas": 0.0, "nonbrandedSpend": 25.93, "nonbrandedRev": 0.0, "nonbrandedRoas": 0.0, "b2bSpend": 0.61, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 27.56, "googleRev": 0.0, "totalSpend": 115.38, "shopifyRev": 0.0, "mer": 0.0}, {"key": "gisteren", "label": "Gisteren", "from": "2026-08-12", "to": "2026-08-12", "days": 1, "hasGoogle": true, "metaSpend": 185.91, "metaRev": 696.0, "metaRoas": 3.744, "brandedSpend": 3.35, "brandedRev": 159.0, "brandedRoas": 47.463, "nonbrandedSpend": 62.64, "nonbrandedRev": 478.0, "nonbrandedRoas": 7.631, "b2bSpend": 11.63, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 77.62, "googleRev": 637.0, "totalSpend": 263.53, "shopifyRev": 637.0, "mer": 2.417}, {"key": "week", "label": "Deze week", "from": "2026-08-10", "to": "2026-08-13", "days": 4, "hasGoogle": true, "metaSpend": 722.02, "metaRev": 1441.0, "metaRoas": 1.996, "brandedSpend": 14.25, "brandedRev": 159.0, "brandedRoas": 11.158, "nonbrandedSpend": 201.72, "nonbrandedRev": 776.0, "nonbrandedRoas": 3.847, "b2bSpend": 28.35, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 244.32, "googleRev": 935.0, "totalSpend": 966.34, "shopifyRev": 1829.0, "mer": 1.893}, {"key": "maand", "label": "Deze maand", "from": "2026-08-01", "to": "2026-08-13", "days": 13, "hasGoogle": true, "metaSpend": 3411.0, "metaRev": 5980.3, "metaRoas": 1.753, "brandedSpend": 75.17, "brandedRev": 4039.19, "brandedRoas": 53.734, "nonbrandedSpend": 619.5, "nonbrandedRev": 2067.51, "nonbrandedRoas": 3.337, "b2bSpend": 52.39, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 747.06, "googleRev": 6106.7, "totalSpend": 4158.06, "shopifyRev": 7539.24, "mer": 1.813}, {"key": "totaal", "label": "Sinds start tracking", "from": "2026-07-20", "to": "2026-08-13", "days": 25, "hasGoogle": true, "metaSpend": 5232.14, "metaRev": 10491.6, "metaRoas": 2.005, "brandedSpend": 149.12, "brandedRev": 7267.01, "brandedRoas": 48.733, "nonbrandedSpend": 880.38, "nonbrandedRev": 3353.19, "nonbrandedRoas": 3.809, "b2bSpend": 52.63, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 1082.13, "googleRev": 10620.2, "totalSpend": 6314.27, "shopifyRev": 12622.84, "mer": 1.999}].forEach(p => PERIODS[p.key] = p);
+const DAILY_TRACKBEE = [{"d": "2026-07-20", "metaSpend": 212.19, "metaRev": 0.0}, {"d": "2026-07-21", "metaSpend": 200.7, "metaRev": 298.0}, {"d": "2026-07-22", "metaSpend": 203.39, "metaRev": 903.0}, {"d": "2026-07-23", "metaSpend": 213.53, "metaRev": 298.0}, {"d": "2026-07-24", "metaSpend": 121.15, "metaRev": 149.0}, {"d": "2026-07-25", "metaSpend": 135.88, "metaRev": 298.0}, {"d": "2026-07-26", "metaSpend": 162.12, "metaRev": 432.1}, {"d": "2026-07-27", "metaSpend": 28.6, "metaRev": 0.0}, {"d": "2026-07-28", "metaSpend": 143.06, "metaRev": 596.0}, {"d": "2026-07-29", "metaSpend": 132.87, "metaRev": 710.2}, {"d": "2026-07-30", "metaSpend": 133.19, "metaRev": 149.0}, {"d": "2026-07-31", "metaSpend": 134.46, "metaRev": 678.0}, {"d": "2026-08-01", "metaSpend": 124.76, "metaRev": 298.0}, {"d": "2026-08-02", "metaSpend": 152.96, "metaRev": 892.1}, {"d": "2026-08-03", "metaSpend": 102.14, "metaRev": 0.0}, {"d": "2026-08-04", "metaSpend": 162.6, "metaRev": 0.0}, {"d": "2026-08-05", "metaSpend": 313.53, "metaRev": 851.1}, {"d": "2026-08-06", "metaSpend": 342.8, "metaRev": 745.0}, {"d": "2026-08-07", "metaSpend": 359.16, "metaRev": 879.1}, {"d": "2026-08-08", "metaSpend": 510.71, "metaRev": 298.0}, {"d": "2026-08-09", "metaSpend": 620.32, "metaRev": 576.0}, {"d": "2026-08-10", "metaSpend": 268.26, "metaRev": 596.0}, {"d": "2026-08-11", "metaSpend": 180.03, "metaRev": 149.0}, {"d": "2026-08-12", "metaSpend": 185.91, "metaRev": 696.0}, {"d": "2026-08-13", "metaSpend": 87.82, "metaRev": 0.0}];
+const DAILY_SHOPIFY = [{"d": "2026-07-16", "rev": 744.65}, {"d": "2026-07-17", "rev": 447}, {"d": "2026-07-18", "rev": 717.55}, {"d": "2026-07-19", "rev": 392.95}, {"d": "2026-07-20", "rev": 0}, {"d": "2026-07-21", "rev": 149}, {"d": "2026-07-22", "rev": 675}, {"d": "2026-07-23", "rev": 596}, {"d": "2026-07-24", "rev": 447}, {"d": "2026-07-25", "rev": 298}, {"d": "2026-07-26", "rev": 283.1}, {"d": "2026-07-27", "rev": 45.25}, {"d": "2026-07-28", "rev": 755.05}, {"d": "2026-07-29", "rev": 949.2}, {"d": "2026-07-30", "rev": 298}, {"d": "2026-07-31", "rev": 588}, {"d": "2026-08-01", "rev": 239}, {"d": "2026-08-02", "rev": 610.55}, {"d": "2026-08-03", "rev": 90}, {"d": "2026-08-04", "rev": 0}, {"d": "2026-08-05", "rev": 1140.29}, {"d": "2026-08-06", "rev": 811.1}, {"d": "2026-08-07", "rev": 1118.1}, {"d": "2026-08-08", "rev": 505.65}, {"d": "2026-08-09", "rev": 1195.55}, {"d": "2026-08-10", "rev": 447}, {"d": "2026-08-11", "rev": 745}, {"d": "2026-08-12", "rev": 637}];
+const CAL_MIN = "2026-07-20";
+const TODAY_S = "2026-08-13";
+let P = "maand";
+let _cS = null, _cE = null;
+const _todayD = new Date(TODAY_S + "T00:00:00");
+let _cY = _todayD.getFullYear(), _cM = _todayD.getMonth();
+
+function tog(id) { document.getElementById(id).classList.toggle("open"); }
+function eur(v) { return "€" + v.toLocaleString("nl-NL", {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function x2(v) { return (v === null || v === undefined) ? "—" : v.toFixed(2) + "×"; }
+const mo = ["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+const fmtS = s => { const [,m,d] = s.split("-"); return `${+d} ${mo[+m-1]}`; };
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+
+function roasClass(v) {
+  if (v === null || v === undefined) return "";
+  if (v >= 2.5) return "good";
+  if (v >= 1.5) return "warn";
+  return "bad";
+}
+
+function togglePM() {
+  const m = document.getElementById("periodMenu");
+  const opening = !m.classList.contains("open");
+  m.classList.toggle("open");
+  if (opening) calRender();
+}
+document.addEventListener("click", () => document.getElementById("periodMenu")?.classList.remove("open"));
+
+function selectP(v) {
+  if (!PERIODS[v]) return;
+  P = v;
+  document.querySelectorAll(".pm-opt").forEach(el => el.classList.toggle("active", el.dataset.p === v));
+  document.getElementById("periodMenu").classList.remove("open");
+  render();
+}
+
+function calRender() {
+  const MN = ["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+  document.getElementById("calMlbl").textContent = `${MN[_cM]} ${_cY}`;
+  const fd = new Date(_cY, _cM, 1).getDay();
+  const off = (fd + 6) % 7;
+  const dim = new Date(_cY, _cM + 1, 0).getDate();
+  let h = '<div class="cal-dow">M</div><div class="cal-dow">D</div><div class="cal-dow">W</div><div class="cal-dow">D</div><div class="cal-dow">V</div><div class="cal-dow">Z</div><div class="cal-dow">Z</div>';
+  for (let i = 0; i < off; i++) h += '<div></div>';
+  for (let d = 1; d <= dim; d++) {
+    const ds = `${_cY}-${String(_cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isOff = ds < CAL_MIN || ds > TODAY_S;
+    const iS = ds === _cS, iE = ds === _cE;
+    const iR = _cS && _cE && ds > _cS && ds < _cE;
+    const iT = ds === TODAY_S && !iS && !iE;
+    const cls = "cal-day" + (isOff?" cd-off":"") + (iS?" cd-s":"") + (iE?" cd-e":"") + (iR?" cd-r":"") + (iT?" cd-today":"");
+    h += `<div class="${cls}"${!isOff?` onclick="calClick('${ds}')"`:""}>${d}</div>`;
+  }
+  document.getElementById("calGrid").innerHTML = h;
+  const hint = document.getElementById("calHint"), apply = document.getElementById("calApply");
+  if (!_cS) { hint.textContent = "Klik een startdatum"; apply.disabled = true; }
+  else if (!_cE) { hint.textContent = `Van ${fmtS(_cS)} · klik einddatum`; apply.disabled = true; }
+  else { hint.textContent = `${fmtS(_cS)} t/m ${fmtS(_cE)}`; apply.disabled = false; }
+}
+function calClick(ds) {
+  if (!_cS || (_cS && _cE)) { _cS = ds; _cE = null; }
+  else if (ds === _cS) { _cS = null; }
+  else if (ds < _cS) { _cE = _cS; _cS = ds; }
+  else { _cE = ds; }
+  calRender();
+}
+function calPrev() {
+  if (_cY === CAL_MIN.slice(0,4)*1 && _cM < CAL_MIN.slice(5,7)*1 - 1) return;
+  _cM--; if (_cM < 0) { _cM = 11; _cY--; }
+  calRender();
+}
+function calNext() {
+  if (_cY > _todayD.getFullYear() || (_cY === _todayD.getFullYear() && _cM >= _todayD.getMonth())) return;
+  _cM++; if (_cM > 11) { _cM = 0; _cY++; }
+  calRender();
+}
+function applyCustom() {
+  if (!_cS || !_cE) return;
+  const tb = DAILY_TRACKBEE.filter(d => d.d >= _cS && d.d <= _cE);
+  const sh = DAILY_SHOPIFY.filter(d => d.d >= _cS && d.d <= _cE);
+  const metaSpend = round2(tb.reduce((s,d)=>s+d.metaSpend,0));
+  const metaRev = round2(tb.reduce((s,d)=>s+d.metaRev,0));
+  const shopifyRev = round2(sh.reduce((s,d)=>s+d.rev,0));
+  const days = Math.round((new Date(_cE)-new Date(_cS))/86400000)+1;
+  PERIODS.custom = {
+    key:"custom", label:`${fmtS(_cS)}–${fmtS(_cE)}`, from:_cS, to:_cE, days,
+    hasGoogle:false,
+    metaSpend, metaRev, metaRoas: metaSpend>0? round3(metaRev/metaSpend): null,
+    brandedSpend:0, brandedRev:0, brandedRoas:null,
+    nonbrandedSpend:0, nonbrandedRev:0, nonbrandedRoas:null,
+    b2bSpend:0, b2bRev:0, b2bRoas:null,
+    googleSpend:0, googleRev:0,
+    totalSpend: metaSpend, shopifyRev,
+    mer: metaSpend>0? round3(shopifyRev/metaSpend): null,
+  };
+  selectP("custom");
+}
+function round2(v) { return Math.round(v*100)/100; }
+function round3(v) { return Math.round(v*1000)/1000; }
+
+function render() {
+  const p = PERIODS[P];
+  document.getElementById("periodBtnTxt").textContent = p.label;
+
+  const kpis = [
+    {lbl:"TOTALE ADSPEND", val: eur(p.totalSpend), cls:""},
+    {lbl:"TOTALE OMZET", val: eur(p.shopifyRev), cls:""},
+    {lbl:"MER", val: x2(p.mer), cls: roasClass(p.mer)},
+    {lbl:"META ROAS", val: x2(p.metaRoas), cls: roasClass(p.metaRoas)},
+    {lbl:"GOOGLE NON-BRANDED", val: p.hasGoogle? x2(p.nonbrandedRoas):"—", cls: p.hasGoogle? roasClass(p.nonbrandedRoas):""},
+    {lbl:"GOOGLE BRANDED", val: p.hasGoogle? x2(p.brandedRoas):"—", cls: p.hasGoogle? roasClass(p.brandedRoas):""},
+  ];
+  document.getElementById("kpiStrip").innerHTML = kpis.map(k =>
+    `<div class="kpi-item ${k.cls}"><div class="kpi-lbl">${k.lbl}</div><div class="kpi-val">${k.val}</div></div>`
+  ).join("");
+
+  document.getElementById("merVal").textContent = x2(p.mer);
+  document.getElementById("merDelta").innerHTML = "";
+
+  const mc = (lbl, val, sub, cls) => `<div class="mc"><div class="mc-lbl">${lbl}</div><div class="mc-val ${val==='—'?'na':(cls||'')}">${val}</div><div class="mc-sub">${sub}</div></div>`;
+  document.getElementById("mrow").innerHTML =
+    mc("META ROAS", x2(p.metaRoas), `${eur(p.metaSpend)} → ${eur(p.metaRev)}`, roasClass(p.metaRoas)) +
+    mc("GOOGLE NON-BRANDED", p.hasGoogle?x2(p.nonbrandedRoas):"—", p.hasGoogle?`${eur(p.nonbrandedSpend)} → ${eur(p.nonbrandedRev)}`:"niet beschikbaar voor aangepaste periode", p.hasGoogle?roasClass(p.nonbrandedRoas):"") +
+    mc("GOOGLE BRANDED", p.hasGoogle?x2(p.brandedRoas):"—", p.hasGoogle?`${eur(p.brandedSpend)} → ${eur(p.brandedRev)}`:"niet beschikbaar voor aangepaste periode", p.hasGoogle?roasClass(p.brandedRoas):"");
+
+  document.getElementById("googleNote").style.display = p.hasGoogle ? "" : "none";
+  document.getElementById("metaInfo").textContent = `${fmtS(p.from)} t/m ${fmtS(p.to)} · ${p.days} dag${p.days!==1?"en":""}`;
+
+  const pct = part => p.totalSpend > 0 ? (part / p.totalSpend * 100).toFixed(1) : "0.0";
+  document.getElementById("detailTable").innerHTML = `
+    <thead><tr><th>Kanaal</th><th class="r">Spend</th><th class="r">Omzet</th><th class="r">ROAS</th><th class="r">% van adspend</th></tr></thead>
+    <tbody>
+      <tr><td>Meta</td><td class="r">${eur(p.metaSpend)}</td><td class="r">${eur(p.metaRev)}</td><td class="r">${x2(p.metaRoas)}</td><td class="r">${pct(p.metaSpend)}%</td></tr>
+      ${p.hasGoogle ? `
+      <tr><td>Google totaal</td><td class="r">${eur(p.googleSpend)}</td><td class="r">${eur(p.googleRev)}</td><td class="r">${x2(p.googleSpend>0?p.googleRev/p.googleSpend:null)}</td><td class="r">${pct(p.googleSpend)}%</td></tr>
+      <tr class="sub"><td>↳ non-branded</td><td class="r">${eur(p.nonbrandedSpend)}</td><td class="r">${eur(p.nonbrandedRev)}</td><td class="r">${x2(p.nonbrandedRoas)}</td><td class="r">${pct(p.nonbrandedSpend)}%</td></tr>
+      <tr class="sub"><td>↳ branded</td><td class="r">${eur(p.brandedSpend)}</td><td class="r">${eur(p.brandedRev)}</td><td class="r">${x2(p.brandedRoas)}</td><td class="r">${pct(p.brandedSpend)}%</td></tr>
+      <tr class="sub"><td>↳ B2B (apart)</td><td class="r">${eur(p.b2bSpend)}</td><td class="r">${eur(p.b2bRev)}</td><td class="r">${x2(p.b2bRoas)}</td><td class="r">${pct(p.b2bSpend)}%</td></tr>` : `
+      <tr><td>Google</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">niet beschikbaar voor aangepaste periode</td></tr>`}
+      <tr class="tot"><td>Totaal adspend</td><td class="r">${eur(p.totalSpend)}</td><td class="r">—</td><td class="r">—</td><td class="r">100%</td></tr>
+      <tr class="tot"><td>Totale Shopify-omzet</td><td class="r">—</td><td class="r">${eur(p.shopifyRev)}</td><td class="r">—</td><td class="r">—</td></tr>
+    </tbody>`;
+}
+
+render();
+</script>
+</body>
+</html>
