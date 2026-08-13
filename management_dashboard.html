@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Management dashboard · Meta / Google / MER</title>
+<link rel="icon" type="image/png" href="favicon-management.png">
+<style>
+:root {
+  --c-navy:#121985; --c-navy-dark:#0D1433; --c-navy-hover:#2A31A0; --c-navy-soft:#E8E9F4;
+  --c-paper:#FAFAFA; --c-surface:#F3F4F6; --c-ink:#27272A; --c-muted:#6B7280;
+  --c-border:#E5E7EB; --c-success:#1E5B3A; --c-success-bg:#E6F4EC;
+  --c-danger:#8B3A2E; --c-danger-bg:#FBEAE7; --c-warn:#8A5A12; --c-warn-bg:#FBF1DF;
+  --ff-display:'Newsreader','Georgia','Times New Roman',serif;
+  --ff-sans:'Hanken Grotesk',-apple-system,'Helvetica Neue',sans-serif;
+  --r-md:14px; --r-lg:20px; --r-xl:28px; --r-pill:999px;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--c-paper); color:var(--c-ink); font-family:var(--ff-sans);
+        font-size:14px; line-height:1.5; padding:24px 24px 60px; }
+.wrap { max-width:1040px; margin:0 auto; }
+h1 { font-family:var(--ff-display); font-weight:600; font-size:22px; margin:0 0 2px; color:var(--c-navy-dark); }
+.page-subtitle { font-size:13px; color:var(--c-muted); margin-bottom:18px; }
+.tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
+.tab { font-family:var(--ff-sans); font-size:13px; font-weight:500; padding:8px 14px;
+        border-radius:var(--r-pill); border:1px solid var(--c-border); background:#fff;
+        color:var(--c-ink); cursor:pointer; }
+.tab.active { background:var(--c-navy); color:#fff; border-color:var(--c-navy); }
+.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:8px; }
+@media (max-width:860px) { .kpi-row { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:480px) { .kpi-row { grid-template-columns:1fr; } }
+.kpi-card { background:var(--c-navy-dark); color:#fff; border-radius:var(--r-xl);
+             padding:20px 20px; }
+.kpi-lbl { font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:8px; }
+.kpi-val { font-family:var(--ff-display); font-size:34px; font-weight:600; line-height:1; }
+.kpi-val.na { font-size:18px; font-weight:500; color:rgba(255,255,255,.5); font-family:var(--ff-sans); }
+.kpi-sub { font-size:11px; color:rgba(255,255,255,.65); margin-top:8px; line-height:1.4; }
+.kpi-card.good .kpi-val { color:#9FDBB8; }
+.kpi-card.warn .kpi-val { color:#F0CB84; }
+.kpi-card.bad  .kpi-val { color:#F0A99E; }
+.note { font-size:12px; color:var(--c-muted); margin-bottom:18px; line-height:1.5; }
+.detail { background:#fff; border:1px solid var(--c-border); border-radius:var(--r-lg); padding:4px 0; margin-bottom:18px; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th { text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.03em;
+      color:var(--c-muted); font-weight:600; padding:10px 16px; border-bottom:1px solid var(--c-border); }
+th.r, td.r { text-align:right; }
+td { padding:12px 16px; border-bottom:1px solid var(--c-border); }
+tr:last-child td { border-bottom:none; }
+tr.tot td { font-weight:700; }
+tr.sub td:first-child { padding-left:28px; color:var(--c-muted); font-size:12px; }
+.footer { text-align:center; color:var(--c-muted); font-size:11px; margin-top:22px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Management dashboard</h1>
+  <div class="page-subtitle">Meta ROAS · Google ROAS (branded/non-branded) · MER — dezelfde brondata als het bonus- en break-even-dashboard</div>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="kpi-row" id="kpiRow"></div>
+  <div class="note">Meta = nieuwe omzet buiten de bestaande funnel. Google non-branded = vergelijkbare rol (vangt nieuwe vraag). Google branded = het laatste zetje voor mensen die al naar het merk zochten — hoge ROAS, maar minder incrementeel. B2B (relatiegeschenken) staat apart, andere doelgroep.</div>
+  <div class="detail"><table id="detailTable"></table></div>
+
+  <div class="footer">Bijgewerkt: 2026-08-13 12:07 UTC · Data sinds 2026-07-20 · Bron: Meta Marketing API, Google Ads (via TrackBee, campagne-niveau), Shopify</div>
+</div>
+
+<script>
+const PERIODS = [{"key": "vandaag", "label": "Vandaag", "from": "2026-08-13", "to": "2026-08-13", "days": 1, "metaSpend": 0.0, "metaRev": 0.0, "metaRoas": null, "brandedSpend": 1.02, "brandedRev": 0.0, "brandedRoas": 0.0, "nonbrandedSpend": 25.93, "nonbrandedRev": 0.0, "nonbrandedRoas": 0.0, "b2bSpend": 0.61, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 27.56, "googleRev": 0.0, "totalSpend": 27.56, "shopifyRev": 0.0, "mer": 0.0}, {"key": "gisteren", "label": "Gisteren", "from": "2026-08-12", "to": "2026-08-12", "days": 1, "metaSpend": 98.89, "metaRev": 388.0, "metaRoas": 3.924, "brandedSpend": 3.35, "brandedRev": 159.0, "brandedRoas": 47.463, "nonbrandedSpend": 62.64, "nonbrandedRev": 478.0, "nonbrandedRoas": 7.631, "b2bSpend": 11.63, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 77.62, "googleRev": 637.0, "totalSpend": 176.51, "shopifyRev": 637.0, "mer": 3.609}, {"key": "week", "label": "Deze week", "from": "2026-08-10", "to": "2026-08-13", "days": 4, "metaSpend": 547.17, "metaRev": 1133.0, "metaRoas": 2.071, "brandedSpend": 14.25, "brandedRev": 159.0, "brandedRoas": 11.158, "nonbrandedSpend": 201.72, "nonbrandedRev": 776.0, "nonbrandedRoas": 3.847, "b2bSpend": 28.35, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 244.32, "googleRev": 935.0, "totalSpend": 791.49, "shopifyRev": 1829.0, "mer": 2.311}, {"key": "maand", "label": "Deze maand", "from": "2026-08-01", "to": "2026-08-13", "days": 13, "metaSpend": 3236.15, "metaRev": 5672.3, "metaRoas": 1.753, "brandedSpend": 75.17, "brandedRev": 4039.19, "brandedRoas": 53.734, "nonbrandedSpend": 619.5, "nonbrandedRev": 2067.51, "nonbrandedRoas": 3.337, "b2bSpend": 52.39, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 747.06, "googleRev": 6106.7, "totalSpend": 3983.21, "shopifyRev": 7539.24, "mer": 1.893}, {"key": "totaal", "label": "Sinds start tracking", "from": "2026-07-20", "to": "2026-08-13", "days": 25, "metaSpend": 5057.29, "metaRev": 10183.6, "metaRoas": 2.014, "brandedSpend": 149.12, "brandedRev": 7267.01, "brandedRoas": 48.733, "nonbrandedSpend": 880.38, "nonbrandedRev": 3353.19, "nonbrandedRoas": 3.809, "b2bSpend": 52.63, "b2bRev": 0.0, "b2bRoas": 0.0, "googleSpend": 1082.13, "googleRev": 10620.2, "totalSpend": 6139.42, "shopifyRev": 12622.84, "mer": 2.056}];
+let active = "maand";
+
+function eur(v) {
+  return "€" + v.toLocaleString("nl-NL", {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function x2(v) { return v === null ? "—" : v.toFixed(2) + "×"; }
+
+function roasClass(roas) {
+  if (roas === null) return "";
+  if (roas >= 2.5) return "good";
+  if (roas >= 1.5) return "warn";
+  return "bad";
+}
+
+function render() {
+  const p = PERIODS.find(x => x.key === active);
+
+  document.getElementById("tabs").innerHTML = PERIODS.map(x =>
+    `<button class="tab${x.key===active?" active":""}" onclick="setPeriod('${x.key}')">${x.label}</button>`
+  ).join("");
+
+  const cards = [
+    {lbl:"META ROAS", val:x2(p.metaRoas), cls:roasClass(p.metaRoas),
+      sub:`${eur(p.metaSpend)} → ${eur(p.metaRev)} · nieuwe omzet`},
+    {lbl:"GOOGLE NON-BRANDED ROAS", val:x2(p.nonbrandedRoas), cls:roasClass(p.nonbrandedRoas),
+      sub:`${eur(p.nonbrandedSpend)} → ${eur(p.nonbrandedRev)} · vangt nieuwe vraag`},
+    {lbl:"GOOGLE BRANDED ROAS", val:x2(p.brandedRoas), cls:roasClass(p.brandedRoas),
+      sub:`${eur(p.brandedSpend)} → ${eur(p.brandedRev)} · laatste zetje, niet incrementeel`},
+    {lbl:"MER (BLENDED)", val:x2(p.mer), cls:roasClass(p.mer),
+      sub:`${eur(p.shopifyRev)} omzet / ${eur(p.totalSpend)} totale adspend`},
+  ];
+  document.getElementById("kpiRow").innerHTML = cards.map(c => `
+    <div class="kpi-card ${c.cls}">
+      <div class="kpi-lbl">${c.lbl}</div>
+      <div class="kpi-val${c.val==='—'?' na':''}">${c.val}</div>
+      <div class="kpi-sub">${c.sub}</div>
+    </div>`).join("");
+
+  const pct = (part) => p.totalSpend > 0 ? (part / p.totalSpend * 100).toFixed(1) : "0.0";
+  document.getElementById("detailTable").innerHTML = `
+    <thead><tr><th>Kanaal</th><th class="r">Spend</th><th class="r">Omzet</th><th class="r">ROAS</th><th class="r">% van adspend</th></tr></thead>
+    <tbody>
+      <tr><td>Meta</td><td class="r">${eur(p.metaSpend)}</td><td class="r">${eur(p.metaRev)}</td><td class="r">${x2(p.metaRoas)}</td><td class="r">${pct(p.metaSpend)}%</td></tr>
+      <tr><td>Google totaal</td><td class="r">${eur(p.googleSpend)}</td><td class="r">${eur(p.googleRev)}</td><td class="r">${x2(p.googleSpend>0?p.googleRev/p.googleSpend:null)}</td><td class="r">${pct(p.googleSpend)}%</td></tr>
+      <tr class="sub"><td>↳ non-branded</td><td class="r">${eur(p.nonbrandedSpend)}</td><td class="r">${eur(p.nonbrandedRev)}</td><td class="r">${x2(p.nonbrandedRoas)}</td><td class="r">${pct(p.nonbrandedSpend)}%</td></tr>
+      <tr class="sub"><td>↳ branded</td><td class="r">${eur(p.brandedSpend)}</td><td class="r">${eur(p.brandedRev)}</td><td class="r">${x2(p.brandedRoas)}</td><td class="r">${pct(p.brandedSpend)}%</td></tr>
+      <tr class="sub"><td>↳ B2B (apart)</td><td class="r">${eur(p.b2bSpend)}</td><td class="r">${eur(p.b2bRev)}</td><td class="r">${x2(p.b2bRoas)}</td><td class="r">${pct(p.b2bSpend)}%</td></tr>
+      <tr class="tot"><td>Totaal adspend</td><td class="r">${eur(p.totalSpend)}</td><td class="r">—</td><td class="r">—</td><td class="r">100%</td></tr>
+      <tr class="tot"><td>Totale Shopify-omzet</td><td class="r">—</td><td class="r">${eur(p.shopifyRev)}</td><td class="r">—</td><td class="r">—</td></tr>
+    </tbody>`;
+}
+
+function setPeriod(key) { active = key; render(); }
+render();
+</script>
+</body>
+</html>
